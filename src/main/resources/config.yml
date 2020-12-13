@@ -1,0 +1,4 @@
+double_jump: 0.15
+energy: 12
+max_bounces_off_the_wall: 4
+can_holding_to_wall: true
