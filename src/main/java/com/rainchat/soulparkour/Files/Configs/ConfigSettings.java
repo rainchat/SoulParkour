@@ -3,9 +3,9 @@ package com.rainchat.soulparkour.Files.Configs;
 import com.rainchat.soulparkour.Files.FileManager;
 
 public enum ConfigSettings {
-    DOUBLE_JUMP("double_jump", "0.20"),
-    ENERGY("energy", "10"),
-    MAX_BOUNCES_OFF_THE_WALL("max_bounces_off_the_wall", "2"),
+    DOUBLE_JUMP("double_jump", "0.15"),
+    ENERGY("energy", "12"),
+    MAX_BOUNCES_OFF_THE_WALL("max_bounces_off_the_wall", "4"),
     CAN_HOLDING_TO_WALL("can_holding_to_wall", "true");
 
 

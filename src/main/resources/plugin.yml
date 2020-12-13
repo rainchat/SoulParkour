@@ -21,3 +21,8 @@ permissions:
       soulparkour.use.bounces: true
       soulparkour.use.grab: true
       soulparkour.use.leapoffaith: true
+  soulparkour.admin.*:
+    default: op
+    description: only for admins.
+    children:
+      soulparkour.admin.reload: true

@@ -25,11 +25,14 @@ public class SoulParkourCMD implements CommandExecutor {
         }
         Player p = (Player) sender;
         if (args[0].equalsIgnoreCase("reload")) {
+
             if (args.length > 1) {
                 return false;
             }
-            reload();
-            p.sendMessage(Language.RELOAD.getmessage(true));
+            if (p.hasPermission("soulparkour.admin.reload")){
+                reload();
+                p.sendMessage(Language.RELOAD.getmessage(true));
+            }
         }
 
         return true;
