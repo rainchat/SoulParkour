@@ -25,9 +25,8 @@ public class FallEvent implements Listener {
             Location loc = player.getLocation();
             loc.setY(loc.getY() - 1.0D);
             List whitelist = FileManager.Files.BLOCKS.getFile().getList("Blocks.LeapOfFaith");
-            if (player.isSneaking() && dc.equals(EntityDamageEvent.DamageCause.FALL)
+            if (player.hasPermission("soulparkour.use.leapoffaith") && player.isSneaking() && dc.equals(EntityDamageEvent.DamageCause.FALL)
                     && whitelist.contains(loc.getBlock().getType().toString())) {
-                Bukkit.broadcastMessage("Вы попали в яблочко");
                 player.teleport(loc);
                 e.setCancelled(true);
             } else if (dc.equals(EntityDamageEvent.DamageCause.FALL) && player.getFallDistance() >= 3 && player.getFallDistance() <= 10) {

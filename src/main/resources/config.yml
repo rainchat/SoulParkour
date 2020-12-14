@@ -1,4 +1,13 @@
-double_jump: 0.15
-energy: 12
-max_bounces_off_the_wall: 4
-can_holding_to_wall: true
+# Plugin made by rain_chat (v1.1)
+# reload command /sp reload
+# Permissons to use - soulparkour.use.*
+Settings:
+  # simple double jump (height to jump over the fence)
+  double_jump:
+    jump_higth: 0.15
+    paricle: SMOKE_NORMAL
+    sound: BLAZE_SHOOT
+  # energy that is spent when climbing a wall
+  energy_to_climb: 8
+  # maximum number of jumps from the wall
+  max_bounces_off_the_wall: 4

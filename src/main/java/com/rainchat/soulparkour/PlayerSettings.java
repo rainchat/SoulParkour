@@ -11,7 +11,8 @@ public class PlayerSettings {
 
     private HashMap<UUID, Integer> playerEnergy = new HashMap<>();
     private HashMap<UUID, Integer> playerJumps = new HashMap<>();
-    private HashMap<UUID, Boolean> playerHoldingToWall = new HashMap<>();
+    // to do
+    //private HashMap<UUID, Boolean> playerHoldingToWall = new HashMap<>();
 
     public static PlayerSettings getInstance() {
         return instance;
@@ -20,10 +21,16 @@ public class PlayerSettings {
 
     public void resetDate(Player player) {
         if (player.isOnGround()) {
-            playerEnergy.put(player.getUniqueId(), ConfigSettings.ENERGY.getInt());
+            playerEnergy.put(player.getUniqueId(), ConfigSettings.ENERGY_TO_CLIMB.getInt());
             playerJumps.put(player.getUniqueId(), ConfigSettings.MAX_BOUNCES_OFF_THE_WALL.getInt());
-            playerHoldingToWall.put(player.getUniqueId(), ConfigSettings.CAN_HOLDING_TO_WALL.getBoolen());
+            //playerHoldingToWall.put(player.getUniqueId(), ConfigSettings.CAN_HOLDING_TO_WALL.getBoolen());
         }
+    }
+
+    public void removeDate(Player player) {
+            playerEnergy.remove(player.getUniqueId());
+            playerJumps.remove(player.getUniqueId());
+            //playerHoldingToWall.put(player.getUniqueId(), ConfigSettings.CAN_HOLDING_TO_WALL.getBoolen());
     }
 
 
@@ -35,9 +42,7 @@ public class PlayerSettings {
         playerJumps.put(player.getUniqueId(), playerJumps.get(player.getUniqueId()) - 1);
     }
 
-    public void setPlayerHoldingToWall(Player player) {
-        playerHoldingToWall.put(player.getUniqueId(), true);
-    }
+
 
     public int getPlayerStamina(Player player) {
         return playerEnergy.get(player.getUniqueId());
@@ -47,9 +52,15 @@ public class PlayerSettings {
         return playerJumps.get(player.getUniqueId());
     }
 
+    /*
+    public void setPlayerHoldingToWall(Player player) {
+        playerHoldingToWall.put(player.getUniqueId(), true);
+    }
+
     public boolean getPlayerHoldingToWall(Player player) {
         return playerHoldingToWall.get(player.getUniqueId());
     }
+    */
 
 
 }

@@ -3,22 +3,32 @@ package com.rainchat.soulparkour.Events;
 import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import com.rainchat.soulparkour.Files.FileManager;
 import com.rainchat.soulparkour.PlayerSettings;
+import com.rainchat.soulparkour.SoulParkourMain;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Parkour implements Listener {
     private PlayerSettings playerSettings = PlayerSettings.getInstance();
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e){
+        playerSettings.resetDate(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e){
+        playerSettings.removeDate(e.getPlayer());
+    }
 
 
     @EventHandler
@@ -36,15 +46,33 @@ public class Parkour implements Listener {
             return;
         }
 
+
         event.setCancelled(true);
         player.setAllowFlight(false);
         player.setFlying(false);//Disable to prevent wobbling
 
-        Vector direction = player.getEyeLocation().getDirection().multiply(0.4);
-        direction.setY(ConfigSettings.DOUBLE_JUMP.getDouble());
+        if (player.getFoodLevel() <= 6) {
+            return;
+        }
 
+        Vector direction = player.getEyeLocation().getDirection().multiply(0.6);
+        direction.setY(ConfigSettings.DOUBLE_JUMP_HIGH.getDouble());
+        player.setFoodLevel(player.getFoodLevel()-1);
+        player.getLocation().getWorld().playEffect(player.getLocation(), Effect.valueOf(ConfigSettings.DOUBLE_JUMP_SOUND.getString()), 0, 15);
         player.setVelocity(direction);
-        player.getLocation().getWorld().playEffect(player.getLocation(), Effect.BLAZE_SHOOT, 0, 20);
+
+        new BukkitRunnable(){
+
+            public void run(){
+                player.spawnParticle(Particle.valueOf(ConfigSettings.DOUBLE_JUMP_PARTICLE.getString()), player.getLocation(), 12, 0.05, 0.05, 0.05, 0.05);
+                if (player.isOnGround()){
+                    this.cancel();
+                }
+
+            }
+        }.runTaskTimer(SoulParkourMain.getPluginInstance(), 0, 1);
+
+
     }
 
     @EventHandler
@@ -53,25 +81,19 @@ public class Parkour implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR) ) {
             return;
         }
-        double yx = player.getVelocity().getY() + 0.0784000015258789;
-        if (yx <= 0 && !player.isOnGround()){
-            player.setAllowFlight(false);
-            return;
-        }
+
         if (event.getTo().getBlockX() == event.getFrom().getBlockX() &&
                 event.getTo().getBlockY() == event.getFrom().getBlockY() &&
                 event.getTo().getBlockZ() == event.getFrom().getBlockZ()) {
             return; // user didn't actually move a full block
         }
+        if (player.getVelocity().getY() + 0.0784000015258789 <= 0 && !player.isOnGround()){
+            player.setAllowFlight(false);
+            return;
+        }
+
+
         playerSettings.resetDate(player);
-        boolean test = true;
-        if (player.isFlying()) {
-            Bukkit.broadcastMessage("Ты в полете");
-            return;
-        }
-        if (!player.isOnGround() || player.getWorld().getBlockAt(player.getLocation().add(0, -2, 0)).getType() == Material.AIR) {
-            return;
-        }
         player.setGravity(true);
         player.setAllowFlight(true);
         //Not ready

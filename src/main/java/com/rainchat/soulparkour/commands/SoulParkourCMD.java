@@ -33,6 +33,9 @@ public class SoulParkourCMD implements CommandExecutor {
                 reload();
                 p.sendMessage(Language.RELOAD.getmessage(true));
             }
+            else {
+                p.sendMessage(Language.NO_PERMISSION.getmessage(true));
+            }
         }
 
         return true;
