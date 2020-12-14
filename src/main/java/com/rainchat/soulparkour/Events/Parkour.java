@@ -194,7 +194,7 @@ public class Parkour implements Listener {
 
     private boolean checkTargetBlock(Player player) {
         Block block = player.getTargetBlock(null, 1);
-        List whitelist = FileManager.Files.BLOCKS.getFile().getList("Blocks.GrapBlock");
+        List whitelist = FileManager.Files.BLOCKS.getFile().getList("Blocks.GrabBlock");
         if (block.isEmpty() || !whitelist.contains(block.getType().toString())) {
             return false;
         }

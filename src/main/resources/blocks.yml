@@ -7,7 +7,7 @@ Blocks:
     - ACACIA_LEAVES
     - DARK_OAK_LEAVES
     - HAY_BLOCK
-  GrapBlock:
+  GrabBlock:
     - OAK_LOG
     - SPRUCE_LOG
     - JUNGLE_LOG
