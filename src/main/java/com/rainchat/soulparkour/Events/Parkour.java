@@ -43,6 +43,7 @@ public class Parkour implements Listener {
     public void onFlight(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
+            event.setCancelled(true);
             return;
         }
 
@@ -54,6 +55,7 @@ public class Parkour implements Listener {
         if (player.getFoodLevel() <= 6 || !player.hasPermission("soulparkour.use.doublejump")) {
             return;
         }
+
 
         Vector direction = player.getEyeLocation().getDirection().multiply(0.6);
         direction.setY(ConfigSettings.DOUBLE_JUMP_HIGH.getDouble());
@@ -82,12 +84,13 @@ public class Parkour implements Listener {
             return;
         }
 
+
         if (event.getTo().getBlockX() == event.getFrom().getBlockX() &&
                 event.getTo().getBlockY() == event.getFrom().getBlockY() &&
                 event.getTo().getBlockZ() == event.getFrom().getBlockZ()) {
             return; // user didn't actually move a full block
         }
-        if (player.getVelocity().getY() + 0.0784000015258789 <= 0 && !player.isOnGround()){
+        if (player.getVelocity().getY() + 0.0784000015258789 <= 0 && !player.isOnGround() || !player.hasPermission("soulparkour.use.doublejump")){
             player.setAllowFlight(false);
             return;
         }
