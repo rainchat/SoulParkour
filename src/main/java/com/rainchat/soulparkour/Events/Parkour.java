@@ -138,7 +138,6 @@ public class Parkour implements Listener {
             World wY = loc.getWorld();
             loc.setY(loc.getY() - 1.0D);
             Block bY = wY.getBlockAt(loc);
-            // Проверка блоков - черный список
             if (true) {
                 locX2 = event.getPlayer().getLocation();
                 wX2 = locX2.getWorld();
@@ -182,9 +181,9 @@ public class Parkour implements Listener {
             }
         } else if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK && playerSettings.getPlayerStamina(player) > 0 && player.hasPermission("soulparkour.use.grab")) {
             loc = event.getPlayer().getLocation();
-            Bukkit.broadcastMessage(playerSettings.getPlayerStamina(player) + " ваша выносливость");
-            playerSettings.setPlayerEnergy(player);
+
             if (checkTargetBlock(player)) {
+                playerSettings.setPlayerEnergy(player);
                 tempVec = loc.subtract(player.getLocation()).toVector();
                 vec = (new Vector(tempVec.getX(), 1.0D, tempVec.getZ())).normalize().multiply(0.65D);
                 player.setVelocity(vec);
