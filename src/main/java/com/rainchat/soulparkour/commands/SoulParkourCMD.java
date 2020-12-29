@@ -31,6 +31,7 @@ public class SoulParkourCMD implements CommandExecutor {
             }
             if (p.hasPermission("soulparkour.admin.reload")){
                 reload();
+                FileManager.Files.CONFIG.relaodFile();
                 p.sendMessage(Language.RELOAD.getmessage(true));
             }
             else {

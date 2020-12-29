@@ -42,7 +42,7 @@ public class Parkour implements Listener {
     @EventHandler
     public void onFlight(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR) || !player.hasPermission("soulparkour.use.doublejump")) {
+        if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
             return;
         }
 
@@ -51,7 +51,7 @@ public class Parkour implements Listener {
         player.setAllowFlight(false);
         player.setFlying(false);//Disable to prevent wobbling
 
-        if (player.getFoodLevel() <= 6) {
+        if (player.getFoodLevel() <= 6 || !player.hasPermission("soulparkour.use.doublejump")) {
             return;
         }
 
@@ -182,6 +182,7 @@ public class Parkour implements Listener {
             }
         } else if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK && playerSettings.getPlayerStamina(player) > 0 && player.hasPermission("soulparkour.use.grab")) {
             loc = event.getPlayer().getLocation();
+            Bukkit.broadcastMessage(playerSettings.getPlayerStamina(player) + " ваша выносливость");
             playerSettings.setPlayerEnergy(player);
             if (checkTargetBlock(player)) {
                 tempVec = loc.subtract(player.getLocation()).toVector();

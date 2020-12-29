@@ -21,7 +21,7 @@ public class PlayerSettings {
 
     public void resetDate(Player player) {
         if (player.isOnGround()) {
-            playerEnergy.put(player.getUniqueId(), ConfigSettings.ENERGY_TO_CLIMB.getInt());
+            playerEnergy.put(player.getUniqueId(), ConfigSettings.ENERGY_TO_CLIMB.getInt()*2);
             playerJumps.put(player.getUniqueId(), ConfigSettings.MAX_BOUNCES_OFF_THE_WALL.getInt());
             //playerHoldingToWall.put(player.getUniqueId(), ConfigSettings.CAN_HOLDING_TO_WALL.getBoolen());
         }
