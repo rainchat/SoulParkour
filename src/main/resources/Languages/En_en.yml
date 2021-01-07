@@ -1,0 +1,6 @@
+Preffix: '&f[&bSoulParkour&f] '
+Message:
+  No-Permissions: '&cYou do not have permission to use this command!'
+  Reload: '&7All configs have been reloaded..'
+  Toggle-On: '&7You toggle parkour mode - &aon'
+  Toggle-Off: '&7You toggle parkour mode - &coff'

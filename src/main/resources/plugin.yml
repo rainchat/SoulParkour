@@ -17,6 +17,7 @@ permissions:
     default: op
     description: Gives the player access to all baseline permissions originally meant for a casual player.
     children:
+      soulparkour.command.toggle: true
       soulparkour.use.doublejump: true
       soulparkour.use.bounces: true
       soulparkour.use.grab: true

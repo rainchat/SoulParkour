@@ -13,6 +13,9 @@ public class CommandHendler implements TabCompleter {
         List e = new ArrayList();
         if (args.length == 1) {
             e.add("reload");
+            e.add("toggle");
+            e.add("check");
+            e.add("shulker");
             return e;
         }
         return null;

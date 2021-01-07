@@ -1,5 +1,6 @@
 package com.rainchat.soulparkour.Files;
 
+import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -18,6 +19,7 @@ public class FileManager {
     private String prefix = "";
     private boolean log = false;
     private HashMap<Files, File> files = new HashMap<>();
+    private CustomFile LanguageFile;
     private ArrayList<String> homeFolders = new ArrayList<>();
     private ArrayList<CustomFile> customFiles = new ArrayList<>();
     private HashMap<String, String> jarHomeFolders = new HashMap<>();
@@ -108,12 +110,17 @@ public class FileManager {
             }
             if (log) System.out.println(prefix + "Finished loading custom files.");
         }
+        // register Language
+        LanguageFile = getFile(ConfigSettings.LANGUAGE.getString());
+
         return this;
     }
 
     public String getPrefix() {
         return prefix;
     }
+
+
 
     /**
      * Turn on the logger system for the FileManager.
@@ -142,6 +149,10 @@ public class FileManager {
     public FileManager registerCustomFilesFolder(String homeFolder) {
         homeFolders.add(homeFolder);
         return this;
+    }
+
+    public CustomFile getLanguage(){
+        return LanguageFile;
     }
 
     /**
@@ -297,6 +308,8 @@ public class FileManager {
         for (CustomFile file : customFiles) {
             file.reloadFile();
         }
+        // language update
+        LanguageFile = getFile(ConfigSettings.LANGUAGE.getString());
     }
 
     public ArrayList<String> getAllItemsCatigory() {
@@ -328,8 +341,7 @@ public class FileManager {
         //ENUM_NAME("fileName.yml", "fileLocation.yml"),
         //ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
         CONFIG("config.yml", "config.yml"),
-        BLOCKS("blocks.yml", "blocks.yml"),
-        LANGUAGE("language.yml", "language.yml");
+        BLOCKS("blocks.yml", "blocks.yml");
 
         private String fileName;
         private String fileJar;

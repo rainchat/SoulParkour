@@ -1,13 +1,54 @@
-# Plugin made by rain_chat (v1.1)
-# reload command /sp reload
-# Permissons to use - soulparkour.use.*
+#########################################
+#
+# Plugin made by rain_chat (v2.0 beta)
+#
+# WikiGithub -
+#
+#########################################
 Settings:
-  # simple double jump (height to jump over the fence)
-  double_jump:
+  # You can use custom language
+  # language English - En_en
+  # Язык Русский Ru_ru
+  language: "En_en"
+  max_energy: 12
+  # I haven't added anything yet
+  # but you can use soul or none(it disable particle)
+  effect_stile: soul
+
+ParkourSettings:
+  Climbing:
+    energy_need: 1
+
+  Crawling:
+    energy_need: 1
+    boost: true
+
+  Jump_on_the_wall:
+    energy_need: 1
+
+  Leap_Of_Faith:
+    energy_need: 0
+
+  Wall_jump:
+    energy_need: 1
+
+  Double_jump:
+    energy_need: 1
     jump_high: 0.15
-    paricle: SMOKE_NORMAL
-    sound: BLAZE_SHOOT
-  # energy that is spent when climbing a wall
-  energy_to_climb: 6
-  # maximum number of jumps from the wall
-  max_bounces_off_the_wall: 4
+
+#########################################
+#               Modules
+#       Keep only what you need
+#########################################
+Modules:
+  Climbling: true
+  Crawling: true
+  Jump_on_the_wall: true
+  Leap_Of_Faith: true
+  Wall_jump: true
+  ######################################
+  # Still not ready. not affect anything
+  Wall_run: true
+  # Not completed yet, has a lot of bugs. Use at your own risk
+  Double_jump: false
+  ######################################
