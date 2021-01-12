@@ -21,7 +21,6 @@ public enum Language {
     }
 
 
-
     public static void addMissingMessages() {
         FileConfiguration messages = FileManager.getInstance().getLanguage().getFile();
         boolean saveFile = false;
@@ -41,9 +40,9 @@ public enum Language {
 
     public String getmessage(Boolean preffix) {
         FileConfiguration file = FileManager.getInstance().getLanguage().getFile();
-        if (preffix){
-            return Color.parseHexString(file.getString("Preffix", "&f[&bSoulParkour&f] ") + file.getString(path,defaultMessage));
+        if (preffix) {
+            return Color.parseHexString(file.getString("Preffix", "&f[&bSoulParkour&f] ") + file.getString(path, defaultMessage));
         }
-        return Color.parseHexString(file.getString(path,defaultMessage));
+        return Color.parseHexString(file.getString(path, defaultMessage));
     }
 }

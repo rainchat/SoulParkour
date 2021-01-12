@@ -1,4 +1,4 @@
-package com.rainchat.soulparkour.Events;
+package com.rainchat.soulparkour.Events.eventregistr;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import com.rainchat.soulparkour.Files.database.PlayerDateManager;

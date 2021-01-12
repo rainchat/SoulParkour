@@ -1,5 +1,6 @@
 package com.rainchat.soulparkour.commands;
 
+import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import com.rainchat.soulparkour.Files.Configs.Language;
 import com.rainchat.soulparkour.Files.FileManager;
 import com.rainchat.soulparkour.Files.database.PlayerDateManager;
@@ -8,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.sql.SQLException;
 
@@ -28,7 +28,7 @@ public class SoulParkourCMD implements CommandExecutor {
 
             return true;
         }
-        if (args.length == 0){
+        if (args.length == 0) {
             return true;
         }
         Player p = (Player) sender;
@@ -37,12 +37,11 @@ public class SoulParkourCMD implements CommandExecutor {
             if (args.length > 1) {
                 return false;
             }
-            if (p.hasPermission("soulparkour.admin.reload")){
+            if (p.hasPermission("soulparkour.admin.reload")) {
                 reload();
                 FileManager.Files.CONFIG.relaodFile();
                 p.sendMessage(Language.RELOAD.getmessage(true));
-            }
-            else {
+            } else {
                 p.sendMessage(Language.NO_PERMISSION.getmessage(true));
             }
         }
@@ -54,7 +53,7 @@ public class SoulParkourCMD implements CommandExecutor {
                 return false;
             }
             try {
-                Bukkit.broadcastMessage("" + PlayerDateManager.getEnergy(p));
+                Bukkit.broadcastMessage("" + PlayerDateManager.getEnergy(p) + "/" + Integer.parseInt(ConfigSettings.MAX_ENERGY.getString()));
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -65,15 +64,20 @@ public class SoulParkourCMD implements CommandExecutor {
             if (args.length > 1) {
                 return false;
             }
-            try {
-                if (PlayerDateManager.toggleMode(p)){
-                    p.sendMessage(Language.TOGGLE_ON.getmessage(true));
-                } else {
-                    p.sendMessage(Language.TOGGLE_OFF.getmessage(true));
+            if (p.hasPermission("soulparkour.command.toggle")) {
+                try {
+                    if (!PlayerDateManager.toggleMode(p)) {
+                        p.sendMessage(Language.TOGGLE_ON.getmessage(true));
+                    } else {
+                        p.sendMessage(Language.TOGGLE_OFF.getmessage(true));
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } else {
+                p.sendMessage(Language.NO_PERMISSION.getmessage(true));
             }
+
         }
 
         return true;

@@ -1,5 +1,6 @@
-package com.rainchat.soulparkour.Events;
+package com.rainchat.soulparkour.Events.eventregistr;
 
+import com.rainchat.soulparkour.Api.customevents.PlayerUseCrawling;
 import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import com.rainchat.soulparkour.Files.database.PlayerDateManager;
 import com.rainchat.soulparkour.SoulParkourMain;
@@ -28,7 +29,7 @@ public class Crawling implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player) {
-            Player p = (Player)e.getEntity();
+            Player p = (Player) e.getEntity();
             if (cancelDamage.contains(p) && e.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)) {
                 e.setCancelled(true);
                 return;
@@ -48,17 +49,18 @@ public class Crawling implements Listener {
 
         if (!player.isSneaking() && player.getLocation().getPitch() >= 45) {
 
-            if (!PlayerDateManager.addEnergy(player,-ConfigSettings.PARKOUR_CRAWLING_ENERGY.getDouble())){
+            if (!PlayerDateManager.addEnergy(player, -ConfigSettings.PARKOUR_CRAWLING_ENERGY.getDouble())) {
                 return;
             }
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(SoulParkourMain.getPluginInstance(), new Runnable() {
                 public void run() {
                     if (player.isSneaking()) {
-                        if (Check.isAWall(player)){
-
+                        if (Check.isAWall(player)) {
+                            callEvent(player);
                             putInTunnel(e.getPlayer());
                         } else if (Check.isATunnel(player)) {
+                            callEvent(player);
                             putInTunnel(e.getPlayer());
                         }
                     }
@@ -70,24 +72,24 @@ public class Crawling implements Listener {
 
     public void putInTunnel(Player player) {
 
-        if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR) ) {
+        if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
             return;
         }
 
         Location loc = player.getLocation();
-        final Location bar,bar2;
+        final Location bar, bar2;
         Vector vector = new Vector();
         cancelDamage.add(player);
         bar = player.getLocation().clone().add(0.0D, 1.0D, 0.0D);
         bar2 = player.getLocation().clone().add(0.0D, -1.0D, 0.0D);
         player.sendBlockChange(bar, Bukkit.createBlockData(Material.BARRIER));
-        if (bar2.getBlock().getType().isAir()){
+        if (bar2.getBlock().getType().isAir()) {
             player.sendBlockChange(bar2, Bukkit.createBlockData(Material.BARRIER));
         }
         Bukkit.getScheduler().scheduleSyncDelayedTask(SoulParkourMain.getPluginInstance(), new Runnable() {
             public void run() {
                 teleport(player);
-                if (ConfigSettings.PARKOUR_CRAWLING_BOOST.getBoolen()){
+                if (ConfigSettings.PARKOUR_CRAWLING_BOOST.getBoolen()) {
                     boost(player);
                 }
 
@@ -127,8 +129,6 @@ public class Crawling implements Listener {
     }
 
 
-
-
     public void boost(Player p) {
         Location loc = p.getLocation();
         new BukkitRunnable() {
@@ -142,6 +142,20 @@ public class Crawling implements Listener {
                 i--;
             }
         }.runTaskTimerAsynchronously(SoulParkourMain.getPluginInstance(), 0, 1);
+    }
+
+    public static void callEvent(Player player) {
+        (new BukkitRunnable() {
+            @Override
+            public void run() {
+                PlayerUseCrawling event = new PlayerUseCrawling(player);
+                Bukkit.getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
+                    return;
+                }
+
+            }
+        }).runTaskLater(SoulParkourMain.getPluginInstance(), 1);
     }
 
 }

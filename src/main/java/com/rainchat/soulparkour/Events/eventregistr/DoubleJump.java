@@ -1,8 +1,10 @@
-package com.rainchat.soulparkour.Events;
+package com.rainchat.soulparkour.Events.eventregistr;
 
+import com.rainchat.soulparkour.Api.customevents.PlayerUseDoubleJump;
 import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import com.rainchat.soulparkour.Files.database.PlayerDateManager;
 import com.rainchat.soulparkour.SoulParkourMain;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
@@ -16,8 +18,7 @@ import org.bukkit.util.Vector;
 
 import java.sql.SQLException;
 
-public class Double_jump implements Listener {
-
+public class DoubleJump implements Listener {
 
 
     @EventHandler
@@ -36,21 +37,23 @@ public class Double_jump implements Listener {
             return;
         }
 
+        if (!PlayerDateManager.addEnergy(player, -ConfigSettings.PARKOUR_DOUBLE_JUMP_ENERGY.getDouble())) {
+            return;
+        }
+        callEvent(player);
 
         Vector direction = player.getEyeLocation().getDirection().multiply(0.6);
         direction.setY(ConfigSettings.PARKOUR_DOUBLE_JUMP_HIGH.getDouble());
-        player.setFoodLevel(player.getFoodLevel()-1);
+        player.setFoodLevel(player.getFoodLevel() - 1);
         player.getLocation().getWorld().playEffect(player.getLocation(), Effect.valueOf(ConfigSettings.SOUND_EFFECT.getString()), 0, 15);
         player.setVelocity(direction);
 
-        if (!PlayerDateManager.addEnergy(player,-ConfigSettings.PARKOUR_DOUBLE_JUMP_ENERGY.getDouble())){
-            return;
-        }
-        new BukkitRunnable(){
 
-            public void run(){
+        new BukkitRunnable() {
+
+            public void run() {
                 player.spawnParticle(Particle.valueOf(ConfigSettings.PARTICLE_EFFECT.getString()), player.getLocation(), 12, 0.05, 0.05, 0.05, 0.05);
-                if (player.isOnGround()){
+                if (player.isOnGround()) {
                     this.cancel();
                 }
 
@@ -63,7 +66,7 @@ public class Double_jump implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR) ) {
+        if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
             return;
         }
 
@@ -73,11 +76,10 @@ public class Double_jump implements Listener {
                 event.getTo().getBlockZ() == event.getFrom().getBlockZ()) {
             return; // user didn't actually move a full block
         }
-        if (player.getVelocity().getY() + 0.0784000015258789 <= 0 && !player.isOnGround() || !player.hasPermission("soulparkour.use.doublejump")){
+        if (player.getVelocity().getY() + 0.0784000015258789 <= 0 && !player.isOnGround() || !player.hasPermission("soulparkour.use.doublejump")) {
             player.setAllowFlight(false);
             return;
         }
-
 
 
         player.setGravity(true);
@@ -95,4 +97,17 @@ public class Double_jump implements Listener {
 
     }
 
+    public static void callEvent(Player player) {
+        (new BukkitRunnable() {
+            @Override
+            public void run() {
+                PlayerUseDoubleJump event = new PlayerUseDoubleJump(player);
+                Bukkit.getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
+                    return;
+                }
+
+            }
+        }).runTaskLater(SoulParkourMain.getPluginInstance(), 1);
+    }
 }

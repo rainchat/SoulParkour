@@ -1,7 +1,7 @@
 package com.rainchat.soulparkour;
 
 import com.rainchat.soulparkour.Effects.EffectListeners;
-import com.rainchat.soulparkour.Events.*;
+import com.rainchat.soulparkour.Events.eventregistr.*;
 import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -14,24 +14,32 @@ public class ModulesLoader {
     private static ModulesLoader instance = new ModulesLoader();
 
     private SoulParkourMain plugin;
+
     public static ModulesLoader getInstance() {
         return instance;
     }
 
-    public void initialization(SoulParkourMain plugin){
+    public void initialization(SoulParkourMain plugin) {
         this.plugin = plugin;
     }
 
-    public void onLoad(){
+    public void onLoad() {
 
         plugin.getServer().getPluginManager().registerEvents(new JoinEvent(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new EffectListeners(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Enegry(), plugin);
 
         //################################################################################
 
         if (ConfigSettings.MODULES_CLIMBING.getBoolen()) {
             plugin.getServer().getPluginManager().registerEvents(new Сlimbing(), plugin);
         }
+        //################################################################################
+
+        if (ConfigSettings.MODULES_CLINGING.getBoolen()){
+            plugin.getServer().getPluginManager().registerEvents(new Clinging(), plugin);
+        }
+
 
         //################################################################################
 
@@ -42,32 +50,33 @@ public class ModulesLoader {
         //################################################################################
 
         if (ConfigSettings.MODULES_JUMP_ON_THE_WALL.getBoolen()) {
-            plugin.getServer().getPluginManager().registerEvents(new Jump_on_the_wall(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new WallJump(), plugin);
         }
 
         //################################################################################
 
         if (ConfigSettings.MODULES_DOUBLE_JUMP.getBoolen()) {
-            plugin.getServer().getPluginManager().registerEvents(new Double_jump(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new DoubleJump(), plugin);
         }
 
         //################################################################################
 
         if (ConfigSettings.MODULES_LEAP_OF_FAITH.getBoolen()) {
-            plugin.getServer().getPluginManager().registerEvents(new Leap_Of_Faith(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new LeapOfFaith(), plugin);
         }
 
         //################################################################################
 
         if (ConfigSettings.MODULES_WALL_JUMP.getBoolen()) {
-            plugin.getServer().getPluginManager().registerEvents(new Wall_jump(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new WallKick(), plugin);
         }
 
         //################################################################################
 
         if (ConfigSettings.MODULES_WALL_RUN.getBoolen()) {
-            plugin.getServer().getPluginManager().registerEvents(new Wall_run(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new WallRun(), plugin);
         }
+
 
         //################################################################################
     }
@@ -85,7 +94,7 @@ public class ModulesLoader {
     }
 
 
-    public void onDisable(SoulParkourMain plugin){
+    public void onDisable(SoulParkourMain plugin) {
 
 
     }

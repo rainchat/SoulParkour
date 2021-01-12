@@ -2,50 +2,52 @@
 #
 # Plugin made by rain_chat (v2.0 beta)
 #
-# WikiGithub -
 #
 #########################################
 Settings:
   # You can use custom language
-  # language English - En_en
-  # Язык Русский Ru_ru
+  # language - En_en(English), Ru_ru(Русский)
   language: "En_en"
-  max_energy: 12
+  max_energy: 20
   # I haven't added anything yet
   # but you can use soul or none(it disable particle)
   effect_stile: soul
 
 ParkourSettings:
   Climbing:
-    energy_need: 1
+    energy_need: 1.5
+
+  Clinging:
+    energy_need: 2
 
   Crawling:
-    energy_need: 1
+    energy_need: 5
     boost: true
 
-  Jump_on_the_wall:
-    energy_need: 1
+  Wall_jump:
+    energy_need: 3.5
 
   Leap_Of_Faith:
     energy_need: 0
 
-  Wall_jump:
-    energy_need: 1
+  Wall_kick:
+    energy_need: 3.5
 
   Double_jump:
-    energy_need: 1
-    jump_high: 0.15
+    energy_need: 6
+    jump_high: 0.25
 
 #########################################
 #               Modules
 #       Keep only what you need
 #########################################
 Modules:
-  Climbling: true
+  Climbing: true
+  Clinging: true
   Crawling: true
-  Jump_on_the_wall: true
   Leap_Of_Faith: true
   Wall_jump: true
+  Wall_kick: true
   ######################################
   # Still not ready. not affect anything
   Wall_run: true

@@ -7,17 +7,18 @@ public enum ConfigSettings {
     MAX_ENERGY("Settings.max_energy", "20.0"),
     PARTICLE_EFFECT("Settings.effect.paricle", "SMOKE_NORMAL"),
     SOUND_EFFECT("Settings.effect.sound", "BLAZE_SHOOT"),
-    LANGUAGE("Settings.language","En_en"),
-    EFFECT_STILE("Settings.effect_stile","none"),
+    LANGUAGE("Settings.language", "En_en"),
+    EFFECT_STILE("Settings.effect_stile", "none"),
 
     //ModulesSettings
-    MODULES_CLIMBING("Modules.Сlimbing","true"),
-    MODULES_CRAWLING("Modules.Crawling","true"),
-    MODULES_JUMP_ON_THE_WALL("Modules.Jump_on_the_wall","true"),
-    MODULES_LEAP_OF_FAITH("Modules.Leap_Of_Faith","true"),
-    MODULES_WALL_JUMP("Modules.Wall_jump","true"),
-    MODULES_WALL_RUN("Modules.Wall_run","true"),
-    MODULES_DOUBLE_JUMP("Modules.Double_jump","false"),
+    MODULES_CLIMBING("Modules.Climbing", "true"),
+    MODULES_CLINGING("Modules.Clinging", "true"),
+    MODULES_CRAWLING("Modules.Crawling", "true"),
+    MODULES_JUMP_ON_THE_WALL("Modules.Wall_jump", "true"),
+    MODULES_LEAP_OF_FAITH("Modules.Leap_Of_Faith", "true"),
+    MODULES_WALL_JUMP("Modules.Wall_kick", "true"),
+    MODULES_WALL_RUN("Modules.Wall_run", "true"),
+    MODULES_DOUBLE_JUMP("Modules.Double_jump", "false"),
 
     //ParkourSettings path "ParkourSettings"
     PARKOUR_DOUBLE_JUMP_HIGH("ParkourSettings.double_jump.jump_high", "0.15"),

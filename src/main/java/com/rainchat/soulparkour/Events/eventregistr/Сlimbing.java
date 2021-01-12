@@ -1,12 +1,14 @@
-package com.rainchat.soulparkour.Events;
+package com.rainchat.soulparkour.Events.eventregistr;
 
-import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import com.rainchat.soulparkour.Api.customevents.PlayerUseClimbing;
 import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import com.rainchat.soulparkour.Files.FileManager;
 import com.rainchat.soulparkour.Files.database.PlayerDateManager;
 import com.rainchat.soulparkour.SoulParkourMain;
 import com.rainchat.soulparkour.utils.Check;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,35 +29,6 @@ public class Сlimbing implements Listener {
 
 
     @EventHandler
-    public void onJump(PlayerJumpEvent event) throws SQLException {
-        Player player = event.getPlayer();
-
-        if (!player.isSneaking()){
-            return;
-        }
-        if (!PlayerDateManager.addEnergy(player,-1.5)){
-            return;
-        }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (player.isOnGround()) {
-                        this.cancel();
-                    }
-                    if (Check.checkTargetBlock(player) && player.isSneaking()){
-                        newRun(player);
-
-                        this.cancel();
-                    }
-                }
-            }.runTaskTimerAsynchronously(SoulParkourMain.getPluginInstance(), 0, 1);
-
-
-
-
-    }
-
-    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) throws SQLException {
         Player player = event.getPlayer();
 
@@ -63,7 +36,7 @@ public class Сlimbing implements Listener {
             return;
         }
 
-        if (player_Cooldown.contains(player.getUniqueId())){
+        if (player_Cooldown.contains(player.getUniqueId())) {
             player_Cooldown.remove(player.getUniqueId());
             return;
         }
@@ -76,13 +49,16 @@ public class Сlimbing implements Listener {
         if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK && player.hasPermission("soulparkour.use.grab")) {
             loc = event.getPlayer().getLocation();
             player_Cooldown.add(player.getUniqueId());
-            if (!PlayerDateManager.addEnergy(player,-ConfigSettings.PARKOUR_CLIMBING_ENERGY.getDouble())){
-                return;
-            }
+
+
 
             if (checkTargetBlock(player)) {
+                if (!PlayerDateManager.addEnergy(player, -ConfigSettings.PARKOUR_CLIMBING_ENERGY.getDouble())) {
+                    return;
+                }
                 tempVec = loc.subtract(player.getLocation()).toVector();
-                if (Check.getBlock(player,1,3).isAir()){
+                callEvent(player);
+                if (Check.getBlock(player, 1, 3).isAir()) {
                     vec = (new Vector(0, 0.65D, 0));
                     player.setVelocity(vec);
                     player.setFallDistance(0.0F);
@@ -106,20 +82,19 @@ public class Сlimbing implements Listener {
     }
 
 
-    public void newRun(Player p){
-        Location bar = p.getLocation().clone().add(0.0D, -1D, 0.0D);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SoulParkourMain.getPluginInstance(), new Runnable() {
+    public static void callEvent(Player player) {
+        (new BukkitRunnable() {
+            @Override
             public void run() {
-                p.sendBlockChange(bar, Bukkit.createBlockData(Material.BARRIER));
-                Bukkit.getScheduler().scheduleSyncDelayedTask(SoulParkourMain.getPluginInstance(), new Runnable() {
-                    public void run() {
-                        p.sendBlockChange(bar, bar.getBlock().getBlockData());
-                        bar.getBlock().getState().update();
-                    }
-                }, 30L);
+                PlayerUseClimbing event = new PlayerUseClimbing(player);
+                Bukkit.getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
+                    return;
+                }
+
             }
-        }, 0L);
+        }).runTaskLater(SoulParkourMain.getPluginInstance(), 1);
     }
+
 
 }

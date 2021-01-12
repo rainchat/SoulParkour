@@ -1,6 +1,5 @@
 package com.rainchat.soulparkour;
 
-import com.rainchat.soulparkour.Events.*;
 import com.rainchat.soulparkour.Files.Configs.Language;
 import com.rainchat.soulparkour.Files.FileManager;
 import com.rainchat.soulparkour.Files.database.SqlLite;
@@ -25,8 +24,8 @@ public final class SoulParkourMain extends JavaPlugin {
         String languages = "/Languages";
         fileManager.logInfo(true)
                 .registerCustomFilesFolder("/Languages")
-                .registerDefaultGenerateFiles("En_en.yml","/Languages", languages)
-                .registerDefaultGenerateFiles("Ru_ru.yml","/Languages", languages)
+                .registerDefaultGenerateFiles("En_en.yml", "/Languages", languages)
+                .registerDefaultGenerateFiles("Ru_ru.yml", "/Languages", languages)
                 .setup(pluginInstance);
 
         Language.addMissingMessages();

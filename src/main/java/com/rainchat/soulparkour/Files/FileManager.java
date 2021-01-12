@@ -121,7 +121,6 @@ public class FileManager {
     }
 
 
-
     /**
      * Turn on the logger system for the FileManager.
      *
@@ -151,7 +150,7 @@ public class FileManager {
         return this;
     }
 
-    public CustomFile getLanguage(){
+    public CustomFile getLanguage() {
         return LanguageFile;
     }
 

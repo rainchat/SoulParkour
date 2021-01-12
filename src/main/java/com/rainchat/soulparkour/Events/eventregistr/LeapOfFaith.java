@@ -1,17 +1,19 @@
-package com.rainchat.soulparkour.Events;
+package com.rainchat.soulparkour.Events.eventregistr;
 
+import com.rainchat.soulparkour.Api.customevents.PlayerUseLeapOfFaith;
 import com.rainchat.soulparkour.Files.FileManager;
-import org.bukkit.*;
+import com.rainchat.soulparkour.SoulParkourMain;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class Leap_Of_Faith implements Listener {
+public class LeapOfFaith implements Listener {
 
 
     @EventHandler
@@ -27,12 +29,12 @@ public class Leap_Of_Faith implements Listener {
             List whitelist = FileManager.Files.BLOCKS.getFile().getList("Blocks.LeapOfFaith");
 
 
-
             if (player.hasPermission("soulparkour.use.leapoffaith") && player.isSneaking() && dc.equals(EntityDamageEvent.DamageCause.FALL)
                     && whitelist.contains(loc.getBlock().getType().toString())) {
-                player.spawnParticle(Particle.ITEM_CRACK, loc, 75, 1, 0.1, 0.1, 0.1, new ItemStack(loc.getBlock().getType()));
+                callEvent(player);
                 e.setCancelled(true);
             } else if (dc.equals(EntityDamageEvent.DamageCause.FALL) && player.getFallDistance() >= 3 && player.getFallDistance() <= 10) {
+                //callEvent(player);
                 if (player.isSneaking()) {
                     e.setDamage(e.getDamage() - 3.0F);
                     player.setVelocity(player.getLocation().getDirection().setY(0).normalize().multiply(1.4D));
@@ -46,5 +48,19 @@ public class Leap_Of_Faith implements Listener {
                 }
             }
         }
+    }
+
+    public static void callEvent(Player player) {
+        (new BukkitRunnable() {
+            @Override
+            public void run() {
+                PlayerUseLeapOfFaith event = new PlayerUseLeapOfFaith(player);
+                Bukkit.getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
+                    return;
+                }
+
+            }
+        }).runTaskLater(SoulParkourMain.getPluginInstance(), 1);
     }
 }

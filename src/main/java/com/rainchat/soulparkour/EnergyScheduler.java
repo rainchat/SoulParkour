@@ -2,8 +2,9 @@ package com.rainchat.soulparkour;
 
 import com.rainchat.soulparkour.Files.Configs.ConfigSettings;
 import com.rainchat.soulparkour.Files.database.PlayerDateManager;
-import net.md_5.bungee.api.ChatMessageType;
+import com.rainchat.soulparkour.utils.ProgressBar;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ public class EnergyScheduler {
 
     static public EnergyScheduler instance = new EnergyScheduler();
 
-    static public EnergyScheduler getInstance(){
+    static public EnergyScheduler getInstance() {
         return instance;
     }
 
@@ -32,6 +33,8 @@ public class EnergyScheduler {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+
+
             }
         }, 0, 5);
     }
